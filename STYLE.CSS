@@ -42,10 +42,21 @@ a { color: inherit; }
 .front-overlay { position: absolute; inset: 0; display: flex; align-items: end; padding: 26px; color: #fff; background: linear-gradient(transparent 15%, #000b 100%); transition: background .25s; }
 .front-overlay h3 { font-size: 1.2rem; line-height: 1.35; }
 .front-card:hover .front-overlay { background: linear-gradient(transparent 0%, #000c 100%); }
-.actions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-.action-card { overflow: hidden; border-radius: 16px; background: var(--surface); }
-.action-card img { width: 100%; height: 300px; object-fit: cover; transition: transform .35s; }
-.action-card:hover img { transform: scale(1.04); }
+/* Galeria de ações: carrossel infinito no desktop */
+.actions-carousel { overflow: hidden; width: 100%; }
+.actions-track { display: flex; width: max-content; animation: actions-scroll 34s linear infinite; }
+.actions-group { display: flex; flex: 0 0 auto; gap: 18px; padding-right: 18px; }
+.action-card { flex: 0 0 clamp(210px, 22vw, 280px); overflow: hidden; border-radius: 16px; background: var(--surface); transition: filter .3s, opacity .3s; }
+.action-card img { display: block; width: 100%; height: 300px; object-fit: cover; transform: scale(1); transition: transform .45s ease, filter .35s ease; }
+@keyframes actions-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* Ao interagir, pausa o movimento, destaca a imagem e suaviza as demais */
+@media (hover: hover) and (pointer: fine) {
+  .actions-carousel:hover .actions-track { animation-play-state: paused; }
+  .actions-carousel:hover .action-card { filter: grayscale(1); opacity: .72; }
+  .actions-carousel:hover .action-card:hover { filter: grayscale(0); opacity: 1; z-index: 1; }
+  .actions-carousel .action-card:hover img { transform: scale(1.12); }
+}
 footer { padding: 64px 0 28px; color: #f5f7f3; background: #151a15; }
 .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1.2fr 1fr; gap: 36px; }
 .footer-brand img { width: 150px; max-height: 90px; object-fit: contain; margin-bottom: 18px; }
@@ -80,10 +91,17 @@ footer { padding: 64px 0 28px; color: #f5f7f3; background: #151a15; }
   .hero h1 { font-size: 2rem; }
   .front-grid, .actions-grid, .footer-grid { grid-template-columns: 1fr; }
   .front-card { min-height: 330px; }
+  /* No mobile, preserva a grade estática e a visualização atual */
+  .actions-carousel { overflow: visible; }
+  .actions-track { display: block; width: 100%; animation: none; }
+  .actions-group { display: grid; grid-template-columns: 1fr; gap: 18px; padding: 0; }
+  .actions-group[aria-hidden="true"] { display: none; }
+  .action-card { width: 100%; }
   .action-card img { height: auto; max-height: 420px; }
   .footer-bottom { flex-direction: column; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .actions-track { animation: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
