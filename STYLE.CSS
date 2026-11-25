@@ -55,7 +55,6 @@ a { color: inherit; }
   .actions-carousel:hover .actions-track { animation-play-state: paused; }
   .actions-carousel:hover .action-card { filter: grayscale(1); opacity: .72; }
   .actions-carousel:hover .action-card:hover { filter: grayscale(0); opacity: 1; z-index: 1; }
-  .actions-carousel .action-card:hover img { transform: scale(1.12); }
 }
 footer { padding: 64px 0 28px; color: #f5f7f3; background: #151a15; }
 .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1.2fr 1fr; gap: 36px; }
